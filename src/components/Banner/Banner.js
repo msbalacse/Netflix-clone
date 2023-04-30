@@ -1,6 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Banner.css";
+import axios from "../Axios/axios";
+import requests from "../Axios/Requests";
+
 const Banner = () => {
+  const [movie, setMovie] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const request = await axios.get(requests.fetchComedyMovies);
+      setMovie(
+        request.data.results[
+          Math.floor(Math.random() * request.data.results.length - 1)
+        ]
+      );
+      return request;
+    }
+    fetchData();
+  }, []);
+
   const truncate = (str, n) => {
     return str?.length > n ? str.substr(0, n - 1) + "..." : str;
   };
@@ -11,23 +29,19 @@ const Banner = () => {
       style={{
         backgroundSize: "cover",
         backgroundPosition: "center center",
-        backgroundImage: `url("https://i.imgur.com/e1hLQ2m.png")`,
+        backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie?.backdrop_path}")`,
       }}
     >
       <div className="banner__contents">
-        <h1 className="banner__title">Movie title</h1>
+        <h1 className="banner__title">
+          {movie?.title || movie?.name || movie?.original_name}
+        </h1>
         <div className="banner_buttons">
           <button className="banner__button">Play</button>
           <button className="banner__button">My List</button>
         </div>
         <h1 className="banner__description">
-          {truncate(
-            `Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-          debitis eius corrupti tenetur neque odit voluptas? Similique,
-          blanditiis quas cupiditate, veritatis nesciunt ipsam dolorum,
-          inventore amet optio omnis nulla quibusdam.`,
-            100
-          )}
+          {truncate(movie?.overview, 100)}
         </h1>
       </div>
       <div className="banner__fadeBottom"></div>
