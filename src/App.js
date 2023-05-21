@@ -13,8 +13,8 @@ function App() {
           <Loginscreen />
         ) : (
           <Routes>
-            <Route path="/" element={<Loginscreen />}></Route>
-            <Route path="/home" element={<Homescreen />}></Route>
+            {/* <Route path="/" element={<Loginscreen />}></Route> */}
+            <Route path="/" element={<Homescreen />}></Route>
           </Routes>
         )}
       </Router>
